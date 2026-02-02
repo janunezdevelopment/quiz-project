@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./src/fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 25% 151%;
+}
+
+@font-face {
+  font-family: 'Karla';
+  src: url('./src/fonts/Inter Font/Karla-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-stretch: 25% 151%;
+}
+
+/* Utility Selectors */
+
+.karla-font {
+  font-family: 'Karla', sans-serif;
+  font-weight: 600;
+}
+
+.text-color-dark-blue {
+  color: #293264;
+}
+
+.text-color-cream {
+  color: #F5F7FB;
+}
+
+.button-background-color1 {
+  background-color: #4D5B9E;
+}
+
+.small-font {
+  font-size: 0.64rem;
+}
+
+/* Main App */
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F5F7FB;
+  font-family: 'Inter', sans-serif;
+}
+
+.app-container {
+  margin: 0 1em;
+}
+
+#blob1 {
+  position : absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  width: 7.5em;
+}
+
+#blob2 {
+  position : absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
+  width: 7.5em;
+}
+
+/* Intro Page */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.intro h1 {
+  margin-bottom: 0.3em;
+  font-size: 1.953125rem;
+}
+
+.intro span {
+  margin-bottom: 2em;
+  font-weight: 500;
+}
+
+.intro button {
+  border: none;
+  border-radius: 15px;
+  font-family: inherit;
+  width: 12.0625em;
+  height: 3.253em;
+}
+
+.intro button:hover {
+  cursor: pointer;
+}
+
+/* Quiz Page */
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.questions-answers-section {
+  margin-bottom: 1.2em;
+  border-bottom: 1px solid #DBDEF0;
+}
+
+.questions-answers-section label {
+  margin-bottom: 10em;
+}
+
+.answer-button-container {
+  margin: 1em auto;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.7em;
+}
+
+.answer-button {
+  width: 8.4em;
+  height: 3em;
+  border-radius: 7.94px;
+  background: none;
+  font-weight: 500;
+}
+
+.correct-answer {
+  background-color: #D6DBF5;
+}
+
+.form-submission-button {
+  width: 10em;
+  height: 3em;
+  border: none;
+  border-radius: 10px;
+  background-color: #4D5B9E;
+  padding: auto;
+  white-space: nowrap;
+}
