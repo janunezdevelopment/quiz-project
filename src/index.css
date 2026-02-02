@@ -6,14 +6,14 @@
 
 @font-face {
   font-family: 'Inter';
-  src: url('./src/fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  src: url('./fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf') format('truetype');
   font-weight: 100 900;
   font-stretch: 25% 151%;
 }
 
 @font-face {
   font-family: 'Karla';
-  src: url('./src/fonts/Inter Font/Karla-VariableFont_wght.ttf') format('truetype');
+  src: url('./fonts/Karla/Karla-VariableFont_wght.ttf') format('truetype');
   font-weight: 100 900;
   font-stretch: 25% 151%;
 }
