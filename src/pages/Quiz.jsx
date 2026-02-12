@@ -4,6 +4,9 @@ import { shuffle } from "../utils.jsx"
 function Quiz({ gameData }) {
   
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [showResults, setShowResults] = useState(false);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     // Guard clause: ensure gameData exists and is an array
@@ -20,6 +23,15 @@ function Quiz({ gameData }) {
     }
   }, [gameData]); // Re-runs if the parent sends totally new data
 
+  const handleAnswerClick = (questionIndex, answer) => {
+    if (!showResults) {
+      setSelectedAnswers(prev => ({
+        ...prev,
+        [questionIndex]: answer
+      }));
+    }
+  };
+
   if (shuffledQuestions.length === 0) return <p>Loading questions...</p>;
     
   const questionElements = shuffledQuestions.map((item, index) => {
@@ -27,25 +39,66 @@ function Quiz({ gameData }) {
       <section className="questions-answers-section" key={index}>
         <label className="text-color-dark-blue karla-font">{item.question}</label>
         <div className="answer-button-container">
-          {item.options.map((answer, answerIndex) => (
-            <button key={answerIndex} className="answer-button text-color-dark-blue small-font">
-              {answer}
-            </button>
-          ))}
+          {item.options.map((answer, answerIndex) => {
+            const isSelected = selectedAnswers[index] === answer;
+            const isCorrect = answer === item.correct_answer;
+            const showCorrect = showResults && isCorrect;
+            const showIncorrect = showResults && isSelected && !isCorrect;
+            
+            return (
+              <button 
+                key={answerIndex} 
+                type="button"
+                onClick={() => handleAnswerClick(index, answer)}
+                className={`answer-button text-color-dark-blue small-font 
+                  ${isSelected && !showResults ? 'selected-answer' : ''}
+                  ${showCorrect ? 'correct-answer' : ''}
+                  ${showIncorrect ? 'incorrect-answer' : ''}`}
+              >
+                {answer}
+              </button>
+            );
+          })}
         </div>
       </section>
     )
   })
 
   const handleSubmit = event => {
-    event.preventDefault()
-    alert('Form Submitted')
+    event.preventDefault();
+    
+    if (!showResults) {
+      // Calculate score
+      let correctCount = 0;
+      shuffledQuestions.forEach((question, index) => {
+        if (selectedAnswers[index] === question.correct_answer) {
+          correctCount++;
+        }
+      });
+      
+      setScore(correctCount);
+      setShowResults(true);
+    } else {
+      // Reset the quiz
+      setSelectedAnswers({});
+      setShowResults(false);
+      setScore(0);
+    }
   }
   
   return (
     <form className="quiz-form" onSubmit={handleSubmit}>
       {questionElements}
-      <button className="form-submission-button text-color-cream">Check answers</button>
+      <div className="results-container">
+        {showResults && (
+          <p className="score-text text-color-dark-blue karla-font">
+            You scored {score}/{shuffledQuestions.length} correct answers
+          </p>
+        )}
+        <button className="form-submission-button text-color-cream">
+          {showResults ? 'Play again' : 'Check answers'}
+        </button>
+      </div>
     </form>
   )
 }
