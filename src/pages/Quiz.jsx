@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { shuffle } from "../utils.jsx"
 
-function Quiz({ gameData }) {
+function Quiz({ gameData, onPlayAgain }) {
   
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
@@ -67,7 +67,10 @@ function Quiz({ gameData }) {
   const handleSubmit = event => {
     event.preventDefault();
     
-    if (!showResults) {
+    // Check if all questions have been answered
+    const allAnswered = Object.keys(selectedAnswers).length === shuffledQuestions.length;
+    
+    if (!showResults && allAnswered) {
       // Calculate score
       let correctCount = 0;
       shuffledQuestions.forEach((question, index) => {
@@ -78,13 +81,17 @@ function Quiz({ gameData }) {
       
       setScore(correctCount);
       setShowResults(true);
-    } else {
-      // Reset the quiz
+    } else if (showResults) {
+      // Fetch new questions and reset the quiz
       setSelectedAnswers({});
       setShowResults(false);
       setScore(0);
+      onPlayAgain();
     }
   }
+  
+  const allAnswered = Object.keys(selectedAnswers).length === shuffledQuestions.length;
+  const isButtonDisabled = !showResults && !allAnswered;
   
   return (
     <form className="quiz-form" onSubmit={handleSubmit}>
@@ -95,7 +102,11 @@ function Quiz({ gameData }) {
             You scored {score}/{shuffledQuestions.length} correct answers
           </p>
         )}
-        <button className="form-submission-button text-color-cream">
+        <button 
+          type="submit"
+          className="form-submission-button text-color-cream"
+          disabled={isButtonDisabled}
+        >
           {showResults ? 'Play again' : 'Check answers'}
         </button>
       </div>

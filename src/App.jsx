@@ -39,12 +39,16 @@ function App() {
     fetchQuestions()
   }
 
+  const handlePlayAgain = () => {
+    fetchQuestions()
+  }
+
   return (
     <div className="app-container">
       <img id="blob1" src="./src/assets/imgs/blob 1.png" />
       <img id="blob2" src="./src/assets/imgs/blob 2.png" />
       {!gameState && <Intro startGame={startGame} />}
-      {gameState && <Quiz gameData={gameData} />}
+      {gameState && <Quiz gameData={gameData} onPlayAgain={handlePlayAgain} />}
     </div>
   )
 }

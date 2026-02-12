@@ -53,7 +53,10 @@ body {
 }
 
 .app-container {
-  margin: 0 1rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 600px;
+  width: 100%;
 }
 
 #blob1 {
@@ -109,6 +112,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .questions-answers-section {
@@ -149,6 +155,10 @@ body {
   border-color: #D6DBF5;
 }
 
+.selected-answer:hover {
+  background-color: #D6DBF5;
+}
+
 .correct-answer {
   background-color: #94D7A2;
   border-color: #94D7A2;
@@ -163,17 +173,17 @@ body {
 .results-container {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.7rem;
   margin-top: 1rem;
 }
 
 .score-text {
-  font-size: 0.875rem;
+  font-size: 1.2rem;
   font-weight: 700;
 }
 
 .form-submission-button {
-  width: 9rem;
+  width: 10rem;
   height: 2.5rem;
   border: none;
   border-radius: 10px;
@@ -195,4 +205,11 @@ body {
 .form-submission-button:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(77, 91, 158, 0.3);
+}
+
+.form-submission-button:disabled {
+  background-color: #B0B7D4;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
