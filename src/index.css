@@ -5,15 +5,16 @@
 }
 
 @font-face {
-  font-family: 'Inter';
-  src: url('./fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+  font-family: "Inter";
+  src: url("./fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf")
+    format("truetype");
   font-weight: 100 900;
   font-stretch: 25% 151%;
 }
 
 @font-face {
-  font-family: 'Karla';
-  src: url('./fonts/Karla/Karla-VariableFont_wght.ttf') format('truetype');
+  font-family: "Karla";
+  src: url("./fonts/Karla/Karla-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-stretch: 25% 151%;
 }
@@ -21,7 +22,7 @@
 /* Utility Selectors */
 
 .karla-font {
-  font-family: 'Karla', sans-serif;
+  font-family: "Karla", sans-serif;
   font-weight: 600;
 }
 
@@ -30,11 +31,11 @@
 }
 
 .text-color-cream {
-  color: #F5F7FB;
+  color: #f5f7fb;
 }
 
 .button-background-color1 {
-  background-color: #4D5B9E;
+  background-color: #4d5b9e;
 }
 
 .small-font {
@@ -48,8 +49,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #F5F7FB;
-  font-family: 'Inter', sans-serif;
+  background-color: #f5f7fb;
+  font-family: "Inter", sans-serif;
 }
 
 .app-container {
@@ -60,7 +61,7 @@ body {
 }
 
 #blob1 {
-  position : absolute;
+  position: absolute;
   z-index: -1;
   top: 0;
   right: 0;
@@ -68,7 +69,7 @@ body {
 }
 
 #blob2 {
-  position : absolute;
+  position: absolute;
   z-index: -1;
   bottom: 0;
   left: 0;
@@ -119,7 +120,7 @@ body {
 
 .questions-answers-section {
   margin-bottom: 1.2rem;
-  border-bottom: 1px solid #DBDEF0;
+  border-bottom: 1px solid #dbdef0;
 }
 
 .questions-answers-section label {
@@ -138,7 +139,7 @@ body {
   height: auto;
   min-height: 2.2rem;
   border-radius: 7.94px;
-  border: 1px solid #4D5B9E;
+  border: 1px solid #4d5b9e;
   background: none;
   padding: 0.5rem 1rem;
   font-weight: 500;
@@ -147,26 +148,26 @@ body {
 }
 
 .answer-button:hover {
-  background-color: #F5F7FB;
+  background-color: #f5f7fb;
 }
 
 .selected-answer {
-  background-color: #D6DBF5;
-  border-color: #D6DBF5;
+  background-color: #d6dbf5;
+  border-color: #d6dbf5;
 }
 
 .selected-answer:hover {
-  background-color: #D6DBF5;
+  background-color: #d6dbf5;
 }
 
 .correct-answer {
-  background-color: #94D7A2;
-  border-color: #94D7A2;
+  background-color: #94d7a2;
+  border-color: #94d7a2;
 }
 
 .incorrect-answer {
-  background-color: #F8BCBC;
-  border-color: #F8BCBC;
+  background-color: #f8bcbc;
+  border-color: #f8bcbc;
   opacity: 0.5;
 }
 
@@ -187,7 +188,7 @@ body {
   height: 2.5rem;
   border: none;
   border-radius: 10px;
-  background-color: #4D5B9E;
+  background-color: #4d5b9e;
   padding: auto;
   white-space: nowrap;
   cursor: pointer;
@@ -208,7 +209,7 @@ body {
 }
 
 .form-submission-button:disabled {
-  background-color: #B0B7D4;
+  background-color: #b0b7d4;
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
