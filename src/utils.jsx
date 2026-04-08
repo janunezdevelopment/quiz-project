@@ -22,7 +22,7 @@ export const formatQuizData = (data) => {
 
 export const fetchQuestions = async (difficulty = "easy") => {
   const response = await fetch(
-    `https://opentdb.com/api.php?amount=4&category=18&difficulty=${difficulty}&type=multiple`,
+    `https://opentdb.com/api.php?amount=3&category=18&difficulty=${difficulty}&type=multiple`,
   );
 
   if (!response.ok) {
@@ -40,4 +40,35 @@ export const fetchQuestions = async (difficulty = "easy") => {
   }
 
   return formatQuizData(data.results);
+};
+
+export const loadQuestions = async ({
+  gameData,
+  setLoading,
+  setGameData,
+  setGameState,
+}) => {
+  const hasExistingQuestions = Array.isArray(gameData) && gameData.length > 0;
+  setLoading(true);
+  try {
+    const cleanData = await fetchQuestions();
+    setGameData(cleanData);
+    console.log(cleanData);
+  } catch (error) {
+    console.error("Fetch failed", error);
+    if (!hasExistingQuestions) {
+      setGameState(false);
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const startGame = ({ setGameState, loadQuestionsHandler }) => {
+  setGameState((prev) => !prev);
+  loadQuestionsHandler();
+};
+
+export const handlePlayAgain = ({ loadQuestionsHandler }) => {
+  return loadQuestionsHandler();
 };

@@ -1,45 +1,35 @@
 import { useState } from "react";
 import Intro from "./pages/Intro.jsx";
 import Quiz from "./pages/Quiz.jsx";
-import { fetchQuestions } from "./utils.jsx";
+import { loadQuestions, startGame, handlePlayAgain } from "./utils.jsx";
 
 function App() {
   const [gameState, setGameState] = useState(false);
   const [gameData, setGameData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const loadQuestions = async () => {
-    const hasExistingQuestions = Array.isArray(gameData) && gameData.length > 0;
-    setLoading(true);
-    try {
-      const cleanData = await fetchQuestions();
-      setGameData(cleanData);
-      console.log(cleanData);
-    } catch (error) {
-      console.error("Fetch failed", error);
-      if (!hasExistingQuestions) {
-        setGameState(false);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loadQuestionsHandler = () =>
+    loadQuestions({
+      gameData,
+      setLoading,
+      setGameData,
+      setGameState,
+    });
 
-  const startGame = () => {
-    setGameState((prev) => !prev);
-    loadQuestions();
-  };
+  const startGameHandler = () =>
+    startGame({ setGameState, loadQuestionsHandler });
 
-  const handlePlayAgain = () => {
-    return loadQuestions();
-  };
+  const handlePlayAgainHandler = () =>
+    handlePlayAgain({ loadQuestionsHandler });
 
   return (
     <div className="app-container">
       <img id="blob1" src="./src/assets/imgs/blob 1.png" />
       <img id="blob2" src="./src/assets/imgs/blob 2.png" />
-      {!gameState && <Intro startGame={startGame} />}
-      {gameState && <Quiz gameData={gameData} onPlayAgain={handlePlayAgain} />}
+      {!gameState && <Intro startGame={startGameHandler} />}
+      {gameState && (
+        <Quiz gameData={gameData} onPlayAgain={handlePlayAgainHandler} />
+      )}
     </div>
   );
 }
