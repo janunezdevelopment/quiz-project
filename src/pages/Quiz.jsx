@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { shuffle } from "../utils.jsx";
+import Header from "../../components/Header.jsx";
 
 function Quiz({ gameData, onPlayAgain }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
@@ -72,67 +73,70 @@ function Quiz({ gameData, onPlayAgain }) {
   };
 
   return (
-    <section className="quiz-form">
-      {!showResults && (
-        <>
-          <section className="questions-answers-section">
-            <label className="text-color-dark-blue karla-font">
-              {currentQuestion.question}
-            </label>
-            <div className="answer-button-container">
-              {currentQuestion.options.map((answer, answerIndex) => {
-                const isSelected =
-                  selectedAnswers[currentQuestionIndex] === answer;
+    <div className="quiz-page">
+      <Header />
+      <section className="quiz-form">
+        {!showResults && (
+          <>
+            <section className="questions-answers-section">
+              <label className="text-color-dark-blue karla-font">
+                {currentQuestion.question}
+              </label>
+              <div className="answer-button-container">
+                {currentQuestion.options.map((answer, answerIndex) => {
+                  const isSelected =
+                    selectedAnswers[currentQuestionIndex] === answer;
 
-                return (
-                  <button
-                    key={answerIndex}
-                    type="button"
-                    onClick={() =>
-                      handleAnswerClick(currentQuestionIndex, answer)
-                    }
-                    className={`answer-button text-color-dark-blue small-font ${
-                      isSelected ? "selected-answer" : ""
-                    }`}
-                  >
-                    {answer}
-                  </button>
-                );
-              })}
+                  return (
+                    <button
+                      key={answerIndex}
+                      type="button"
+                      onClick={() =>
+                        handleAnswerClick(currentQuestionIndex, answer)
+                      }
+                      className={`answer-button text-color-dark-blue ${
+                        isSelected ? "selected-answer" : ""
+                      }`}
+                    >
+                      {answer}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <div className="results-container">
+              <p className="score-text text-color-dark-blue karla-font">
+                Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
+              </p>
+              <button
+                type="button"
+                className="form-submission-button text-color-cream"
+                disabled={!hasCurrentAnswer}
+                onClick={handleNext}
+              >
+                {isLastQuestion ? "See results" : "Next"}
+              </button>
             </div>
-          </section>
+          </>
+        )}
 
+        {showResults && (
           <div className="results-container">
             <p className="score-text text-color-dark-blue karla-font">
-              Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
+              Final score: {score}/{shuffledQuestions.length}
             </p>
             <button
               type="button"
               className="form-submission-button text-color-cream"
-              disabled={!hasCurrentAnswer}
-              onClick={handleNext}
+              onClick={handlePlayAgainClick}
             >
-              {isLastQuestion ? "See results" : "Next"}
+              Play again
             </button>
           </div>
-        </>
-      )}
-
-      {showResults && (
-        <div className="results-container">
-          <p className="score-text text-color-dark-blue karla-font">
-            Final score: {score}/{shuffledQuestions.length}
-          </p>
-          <button
-            type="button"
-            className="form-submission-button text-color-cream"
-            onClick={handlePlayAgainClick}
-          >
-            Play again
-          </button>
-        </div>
-      )}
-    </section>
+        )}
+      </section>
+    </div>
   );
 }
 
