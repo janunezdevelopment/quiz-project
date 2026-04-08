@@ -24,6 +24,20 @@ export const fetchQuestions = async (difficulty = "easy") => {
   const response = await fetch(
     `https://opentdb.com/api.php?amount=4&category=18&difficulty=${difficulty}&type=multiple`,
   );
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+
   const data = await response.json();
+
+  if (
+    data.response_code !== 0 ||
+    !Array.isArray(data.results) ||
+    data.results.length === 0
+  ) {
+    throw new Error("OpenTDB returned no questions. Please try again.");
+  }
+
   return formatQuizData(data.results);
 };

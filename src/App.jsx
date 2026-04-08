@@ -9,14 +9,17 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const loadQuestions = async () => {
+    const hasExistingQuestions = Array.isArray(gameData) && gameData.length > 0;
     setLoading(true);
-    setGameData(null);
     try {
       const cleanData = await fetchQuestions();
       setGameData(cleanData);
       console.log(cleanData);
     } catch (error) {
       console.error("Fetch failed", error);
+      if (!hasExistingQuestions) {
+        setGameState(false);
+      }
     } finally {
       setLoading(false);
     }

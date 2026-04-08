@@ -4,6 +4,30 @@
   box-sizing: border-box;
 }
 
+:root {
+  --font-family-base: "Inter", sans-serif;
+  --font-family-heading: "Karla", sans-serif;
+
+  --color-text-primary: #293264;
+  --color-text-inverse: #f5f7fb;
+  --color-bg-page: #f5f7fb;
+  --color-primary: #4d5b9e;
+  --color-primary-hover: #3d4a7e;
+  --color-border-soft: #dbdef0;
+  --color-answer-selected: #d6dbf5;
+  --color-answer-correct: #94d7a2;
+  --color-answer-incorrect: #f8bcbc;
+  --color-button-disabled: #b0b7d4;
+
+  --radius-intro-button: 15px;
+  --radius-answer: 7.94px;
+  --radius-submit: 10px;
+
+  --transition-fast: all 0.2s ease;
+  --shadow-primary-hover: 0 4px 8px rgba(77, 91, 158, 0.3);
+  --shadow-primary-active: 0 2px 4px rgba(77, 91, 158, 0.3);
+}
+
 @font-face {
   font-family: "Inter";
   src: url("./fonts/Inter Font/Inter-VariableFont_opsz,wght.ttf")
@@ -22,20 +46,20 @@
 /* Utility Selectors */
 
 .karla-font {
-  font-family: "Karla", sans-serif;
+  font-family: var(--font-family-heading);
   font-weight: 600;
 }
 
 .text-color-dark-blue {
-  color: #293264;
+  color: var(--color-text-primary);
 }
 
 .text-color-cream {
-  color: #f5f7fb;
+  color: var(--color-text-inverse);
 }
 
 .button-background-color1 {
-  background-color: #4d5b9e;
+  background-color: var(--color-primary);
 }
 
 .small-font {
@@ -49,8 +73,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f5f7fb;
-  font-family: "Inter", sans-serif;
+  background-color: var(--color-bg-page);
+  font-family: var(--font-family-base);
 }
 
 .app-container {
@@ -97,7 +121,7 @@ body {
 
 .intro button {
   border: none;
-  border-radius: 15px;
+  border-radius: var(--radius-intro-button);
   font-family: inherit;
   width: 12.0625rem;
   height: 3.253rem;
@@ -120,7 +144,7 @@ body {
 
 .questions-answers-section {
   margin-bottom: 1.2rem;
-  border-bottom: 1px solid #dbdef0;
+  border-bottom: 1px solid var(--color-border-soft);
 }
 
 .questions-answers-section label {
@@ -138,36 +162,36 @@ body {
   min-width: 5rem;
   height: auto;
   min-height: 2.2rem;
-  border-radius: 7.94px;
-  border: 1px solid #4d5b9e;
+  border-radius: var(--radius-answer);
+  border: 1px solid var(--color-primary);
   background: none;
   padding: 0.5rem 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .answer-button:hover {
-  background-color: #f5f7fb;
+  background-color: var(--color-bg-page);
 }
 
 .selected-answer {
-  background-color: #d6dbf5;
-  border-color: #d6dbf5;
+  background-color: var(--color-answer-selected);
+  border-color: var(--color-answer-selected);
 }
 
 .selected-answer:hover {
-  background-color: #d6dbf5;
+  background-color: var(--color-answer-selected);
 }
 
 .correct-answer {
-  background-color: #94d7a2;
-  border-color: #94d7a2;
+  background-color: var(--color-answer-correct);
+  border-color: var(--color-answer-correct);
 }
 
 .incorrect-answer {
-  background-color: #f8bcbc;
-  border-color: #f8bcbc;
+  background-color: var(--color-answer-incorrect);
+  border-color: var(--color-answer-incorrect);
   opacity: 0.5;
 }
 
@@ -187,29 +211,29 @@ body {
   width: 10rem;
   height: 2.5rem;
   border: none;
-  border-radius: 10px;
-  background-color: #4d5b9e;
+  border-radius: var(--radius-submit);
+  background-color: var(--color-primary);
   padding: auto;
   white-space: nowrap;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.875rem;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .form-submission-button:hover {
-  background-color: #3d4a7e;
+  background-color: var(--color-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(77, 91, 158, 0.3);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 .form-submission-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(77, 91, 158, 0.3);
+  box-shadow: var(--shadow-primary-active);
 }
 
 .form-submission-button:disabled {
-  background-color: #b0b7d4;
+  background-color: var(--color-button-disabled);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
