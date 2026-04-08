@@ -4,6 +4,7 @@ import { shuffle } from "../utils.jsx";
 function Quiz({ gameData, onPlayAgain }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -18,6 +19,7 @@ function Quiz({ gameData, onPlayAgain }) {
       }));
 
       setSelectedAnswers({});
+      setCurrentQuestionIndex(0);
       setShowResults(false);
       setScore(0);
       setShuffledQuestions(randomized);
@@ -37,83 +39,100 @@ function Quiz({ gameData, onPlayAgain }) {
 
   if (shuffledQuestions.length === 0) return <p>Loading questions...</p>;
 
-  const questionElements = shuffledQuestions.map((item, index) => {
-    return (
-      <section className="questions-answers-section" key={index}>
-        <label className="text-color-dark-blue karla-font">
-          {item.question}
-        </label>
-        <div className="answer-button-container">
-          {item.options.map((answer, answerIndex) => {
-            const isSelected = selectedAnswers[index] === answer;
-            const isCorrect = answer === item.correct_answer;
-            const showCorrect = showResults && isCorrect;
-            const showIncorrect = showResults && isSelected && !isCorrect;
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === shuffledQuestions.length - 1;
+  const hasCurrentAnswer = Boolean(selectedAnswers[currentQuestionIndex]);
 
-            return (
-              <button
-                key={answerIndex}
-                type="button"
-                onClick={() => handleAnswerClick(index, answer)}
-                className={`answer-button text-color-dark-blue small-font 
-                  ${isSelected && !showResults ? "selected-answer" : ""}
-                  ${showCorrect ? "correct-answer" : ""}
-                  ${showIncorrect ? "incorrect-answer" : ""}`}
-              >
-                {answer}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-    );
-  });
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Check if all questions have been answered
-    const allAnswered =
-      Object.keys(selectedAnswers).length === shuffledQuestions.length;
-
-    if (!showResults && allAnswered) {
-      // Calculate score
-      let correctCount = 0;
-      shuffledQuestions.forEach((question, index) => {
-        if (selectedAnswers[index] === question.correct_answer) {
-          correctCount++;
-        }
-      });
-
-      setScore(correctCount);
-      setShowResults(true);
-    } else if (showResults) {
-      await onPlayAgain();
-    }
+  const calculateScore = () => {
+    let correctCount = 0;
+    shuffledQuestions.forEach((question, index) => {
+      if (selectedAnswers[index] === question.correct_answer) {
+        correctCount++;
+      }
+    });
+    return correctCount;
   };
 
-  const allAnswered =
-    Object.keys(selectedAnswers).length === shuffledQuestions.length;
-  const isButtonDisabled = !showResults && !allAnswered;
+  const handleNext = () => {
+    if (!hasCurrentAnswer || showResults) {
+      return;
+    }
+
+    if (isLastQuestion) {
+      setScore(calculateScore());
+      setShowResults(true);
+      return;
+    }
+
+    setCurrentQuestionIndex((prev) => prev + 1);
+  };
+
+  const handlePlayAgainClick = async () => {
+    await onPlayAgain();
+  };
 
   return (
-    <form className="quiz-form" onSubmit={handleSubmit}>
-      {questionElements}
-      <div className="results-container">
-        {showResults && (
+    <section className="quiz-form">
+      {!showResults && (
+        <>
+          <section className="questions-answers-section">
+            <label className="text-color-dark-blue karla-font">
+              {currentQuestion.question}
+            </label>
+            <div className="answer-button-container">
+              {currentQuestion.options.map((answer, answerIndex) => {
+                const isSelected =
+                  selectedAnswers[currentQuestionIndex] === answer;
+
+                return (
+                  <button
+                    key={answerIndex}
+                    type="button"
+                    onClick={() =>
+                      handleAnswerClick(currentQuestionIndex, answer)
+                    }
+                    className={`answer-button text-color-dark-blue small-font ${
+                      isSelected ? "selected-answer" : ""
+                    }`}
+                  >
+                    {answer}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <div className="results-container">
+            <p className="score-text text-color-dark-blue karla-font">
+              Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
+            </p>
+            <button
+              type="button"
+              className="form-submission-button text-color-cream"
+              disabled={!hasCurrentAnswer}
+              onClick={handleNext}
+            >
+              {isLastQuestion ? "See results" : "Next"}
+            </button>
+          </div>
+        </>
+      )}
+
+      {showResults && (
+        <div className="results-container">
           <p className="score-text text-color-dark-blue karla-font">
-            You scored {score}/{shuffledQuestions.length} correct answers
+            Final score: {score}/{shuffledQuestions.length}
           </p>
-        )}
-        <button
-          type="submit"
-          className="form-submission-button text-color-cream"
-          disabled={isButtonDisabled}
-        >
-          {showResults ? "Play again" : "Check answers"}
-        </button>
-      </div>
-    </form>
+          <button
+            type="button"
+            className="form-submission-button text-color-cream"
+            onClick={handlePlayAgainClick}
+          >
+            Play again
+          </button>
+        </div>
+      )}
+    </section>
   );
 }
 
