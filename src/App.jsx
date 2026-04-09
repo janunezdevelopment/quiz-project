@@ -26,8 +26,6 @@ function App() {
 
   return (
     <div className="app-container">
-      <img id="blob1" src="./src/assets/imgs/blob 1.png" />
-      <img id="blob2" src="./src/assets/imgs/blob 2.png" />
       {!gameState && (
         <Intro
           startGame={startGameHandler}

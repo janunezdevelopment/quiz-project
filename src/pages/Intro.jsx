@@ -1,7 +1,7 @@
 function Intro({ startGame, difficulty, onDifficultyChange }) {
   return (
     <div className="intro">
-      <h1>Quizzical</h1>
+      <h1>QUIZZICAL</h1>
       <span>A quiz about computer tech</span>
       <label htmlFor="difficulty">Select Difficulty:</label>
       <select
@@ -15,7 +15,7 @@ function Intro({ startGame, difficulty, onDifficultyChange }) {
         <option value="medium">Medium</option>
         <option value="hard">Hard</option>
       </select>
-      <button onClick={startGame}>Start Quiz</button>
+      <button onClick={startGame} className="start-game-btn">Start Quiz</button>
     </div>
   );
 }

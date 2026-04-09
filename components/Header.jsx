@@ -1,7 +1,7 @@
 function Header() {
   return (
     <header className="header">
-      <h1>Quizzical</h1>
+      <h1>QUIZZICAL</h1>
     </header>
   );
 }

@@ -121,7 +121,7 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
 
         {showResults && (
           <div className="intro">
-            <h1>Quizzical</h1>
+            <h1>QUIZZICAL</h1>
             <span>
               You scored {score}/{shuffledQuestions.length}!
             </span>
@@ -137,7 +137,7 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
             </select>
-            <button type="button" onClick={handlePlayAgainClick}>
+            <button type="button" onClick={handlePlayAgainClick} className="play-again-btn">
               Play again
             </button>
           </div>
