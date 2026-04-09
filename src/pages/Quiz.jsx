@@ -38,7 +38,7 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     }
   };
 
-  if (shuffledQuestions.length === 0) return <p>Loading questions...</p>;
+  if (shuffledQuestions.length === 0) return <p className="loading-text">Loading questions...</p>;
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === shuffledQuestions.length - 1;
@@ -137,7 +137,11 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
             </select>
-            <button type="button" onClick={handlePlayAgainClick} className="play-again-btn">
+            <button
+              type="button"
+              onClick={handlePlayAgainClick}
+              className="play-again-btn"
+            >
               Play again
             </button>
           </div>
