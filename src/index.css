@@ -18,7 +18,7 @@
   --color-primary-hover: #3d4a7e;
   --color-border-soft: #dbdef0;
   --color-answer-selected: #d6dbf5;
-  --color-answer-correct: #94d7a2;
+  /* --color-answer-correct: #94d7a2; */
   /* --color-answer-incorrect: #f8bcbc; */
   --color-button-disabled: #b0b7d4;
 
@@ -44,25 +44,6 @@
   src: url("./fonts/Karla/Karla-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900;
   font-stretch: 25% 151%;
-}
-
-/* Utility Selectors */
-
-.karla-font {
-  font-family: var(--font-family-heading);
-  font-weight: 600;
-}
-
-.text-color-dark-blue {
-  color: var(--color-text-primary);
-}
-
-.text-color-cream {
-  color: var(--color-text-inverse);
-}
-
-.button-background-color1 {
-  background-color: var(--color-primary);
 }
 
 /* Main App */
@@ -112,12 +93,15 @@ body {
 .intro h1 {
   margin-bottom: 0.3rem;
   font-size: 3rem;
+  font-family: var(--font-family-heading);
   font-weight: 800;
+  color: var(--color-text-primary);
 }
 
 .intro span {
   margin-bottom: 2rem;
   font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .intro label {
@@ -126,15 +110,16 @@ body {
   margin-bottom: 0.5rem;
 }
 
-.intro select,
-.intro button {
+.difficulty-select,
+.intro button,
+.form-submission-button {
   font-family: inherit;
   font-size: var(--font-size-large);
   cursor: pointer;
   transition: var(--transition-fast);
 }
 
-.intro select {
+.difficulty-select {
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-intro-button);
   width: 11rem;
@@ -142,11 +127,14 @@ body {
   text-align: center;
   color: var(--color-text-primary);
   padding: 0 0.5rem;
-  margin-bottom: 1.5rem;
   appearance: none;
 }
 
-.intro select:hover {
+.intro .difficulty-select {
+  margin-bottom: 1.5rem;
+}
+
+.difficulty-select:hover {
   border-color: var(--color-primary-hover);
   box-shadow: var(--shadow-primary-hover);
 }
@@ -156,6 +144,8 @@ body {
   border-radius: var(--radius-intro-button);
   width: 12.5rem;
   height: 3.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
 }
 
 .intro button:hover,
@@ -207,7 +197,9 @@ body {
 
 .questions-answers-section label {
   font-size: var(--font-size-large);
-  margin-bottom: 10rem;
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .answer-button-container {
@@ -229,6 +221,7 @@ body {
   background: none;
   font-size: var(--font-size-small);
   font-weight: 500;
+  color: var(--color-text-primary);
   cursor: pointer;
   transition: var(--transition-fast);
 }
@@ -263,7 +256,9 @@ body {
 
 .score-text {
   font-size: var(--font-size-exlarge);
+  font-family: var(--font-family-heading);
   font-weight: 700;
+  color: var(--color-text-primary);
 }
 
 .form-submission-button {
@@ -272,12 +267,9 @@ body {
   border: none;
   border-radius: var(--radius-submit);
   background-color: var(--color-primary);
-  padding: auto;
+  color: var(--color-text-inverse);
   white-space: nowrap;
-  cursor: pointer;
   font-weight: 400;
-  font-size: var(--font-size-large);
-  transition: var(--transition-fast);
 }
 
 .form-submission-button:hover {
@@ -304,9 +296,13 @@ body {
   gap: 3rem;
 }
 
-.results-container button {
-  border: none;
-  border-radius: var(--radius-intro-button);
-  width: 12.5rem;
-  height: 3.5rem;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }

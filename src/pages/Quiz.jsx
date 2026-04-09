@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { shuffle } from "../utils.jsx";
 import Header from "../../components/Header.jsx";
 
-function Quiz({ gameData, onPlayAgain }) {
+function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -74,14 +74,12 @@ function Quiz({ gameData, onPlayAgain }) {
 
   return (
     <div className="quiz-page">
-      <Header />
+      {!showResults && <Header />}
       <section className="quiz-form">
         {!showResults && (
           <>
             <section className="questions-answers-section">
-              <label className="text-color-dark-blue karla-font">
-                {currentQuestion.question}
-              </label>
+              <label>{currentQuestion.question}</label>
               <div className="answer-button-container">
                 {currentQuestion.options.map((answer, answerIndex) => {
                   const isSelected =
@@ -94,7 +92,7 @@ function Quiz({ gameData, onPlayAgain }) {
                       onClick={() =>
                         handleAnswerClick(currentQuestionIndex, answer)
                       }
-                      className={`answer-button text-color-dark-blue ${
+                      className={`answer-button ${
                         isSelected ? "selected-answer" : ""
                       }`}
                     >
@@ -106,12 +104,12 @@ function Quiz({ gameData, onPlayAgain }) {
             </section>
 
             <div className="results-container">
-              <p className="score-text text-color-dark-blue karla-font">
+              <p className="score-text">
                 Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
               </p>
               <button
                 type="button"
-                className="form-submission-button text-color-cream"
+                className="form-submission-button"
                 disabled={!hasCurrentAnswer}
                 onClick={handleNext}
               >
@@ -122,15 +120,24 @@ function Quiz({ gameData, onPlayAgain }) {
         )}
 
         {showResults && (
-          <div className="results-container">
-            <p className="score-text text-color-dark-blue karla-font">
-              Final score: {score}/{shuffledQuestions.length}
-            </p>
-            <button
-              type="button"
-              className="form-submission-button text-color-cream"
-              onClick={handlePlayAgainClick}
+          <div className="intro">
+            <h1>Quizzical</h1>
+            <span>
+              You scored {score}/{shuffledQuestions.length}!
+            </span>
+            <label htmlFor="results-difficulty">Select Difficulty:</label>
+            <select
+              id="results-difficulty"
+              name="results-difficulty"
+              className="difficulty-select"
+              value={difficulty}
+              onChange={(e) => onDifficultyChange(e.target.value)}
             >
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <button type="button" onClick={handlePlayAgainClick}>
               Play again
             </button>
           </div>

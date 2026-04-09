@@ -44,6 +44,7 @@ export const fetchQuestions = async (difficulty = "easy") => {
 
 export const loadQuestions = async ({
   gameData,
+  difficulty,
   setLoading,
   setGameData,
   setGameState,
@@ -51,7 +52,7 @@ export const loadQuestions = async ({
   const hasExistingQuestions = Array.isArray(gameData) && gameData.length > 0;
   setLoading(true);
   try {
-    const cleanData = await fetchQuestions();
+    const cleanData = await fetchQuestions(difficulty);
     setGameData(cleanData);
     console.log(cleanData);
   } catch (error) {

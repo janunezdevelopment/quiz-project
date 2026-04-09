@@ -7,10 +7,12 @@ function App() {
   const [gameState, setGameState] = useState(false);
   const [gameData, setGameData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [difficulty, setDifficulty] = useState("easy");
 
   const loadQuestionsHandler = () =>
     loadQuestions({
       gameData,
+      difficulty,
       setLoading,
       setGameData,
       setGameState,
@@ -26,9 +28,20 @@ function App() {
     <div className="app-container">
       <img id="blob1" src="./src/assets/imgs/blob 1.png" />
       <img id="blob2" src="./src/assets/imgs/blob 2.png" />
-      {!gameState && <Intro startGame={startGameHandler} />}
+      {!gameState && (
+        <Intro
+          startGame={startGameHandler}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+        />
+      )}
       {gameState && (
-        <Quiz gameData={gameData} onPlayAgain={handlePlayAgainHandler} />
+        <Quiz
+          gameData={gameData}
+          onPlayAgain={handlePlayAgainHandler}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+        />
       )}
     </div>
   );
