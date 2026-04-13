@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { shuffle } from "../utils.jsx";
 import Header from "../../components/Header.jsx";
 import DifficultyOptions from "../../components/Difficulty-Options";
@@ -16,6 +15,8 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
+  const questionHeadingRef = useRef(null);
+  const resultsHeadingRef = useRef(null);
 
   useEffect(() => {
     // Guard clause: ensure gameData exists and is an array
@@ -37,6 +38,19 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     }
   }, [gameData]); // Re-runs if the parent sends totally new data
 
+  useEffect(() => {
+    if (shuffledQuestions.length === 0) {
+      return;
+    }
+
+    if (showResults) {
+      resultsHeadingRef.current?.focus();
+      return;
+    }
+
+    questionHeadingRef.current?.focus();
+  }, [showResults, currentQuestionIndex, shuffledQuestions.length]);
+
   const handleAnswerClick = (questionIndex, answer) => {
     if (!showResults) {
       setSelectedAnswers((prev) => ({
@@ -46,12 +60,51 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     }
   };
 
+  const handleAnswerKeyDown = (event, questionIndex, answerIndex, options) => {
+    const { key, currentTarget } = event;
+    const isNextKey = key === "ArrowRight" || key === "ArrowDown";
+    const isPrevKey = key === "ArrowLeft" || key === "ArrowUp";
+    const isHomeKey = key === "Home";
+    const isEndKey = key === "End";
+
+    if (!isNextKey && !isPrevKey && !isHomeKey && !isEndKey) {
+      return;
+    }
+
+    event.preventDefault();
+
+    let nextIndex = answerIndex;
+    if (isNextKey) {
+      nextIndex = (answerIndex + 1) % options.length;
+    } else if (isPrevKey) {
+      nextIndex = (answerIndex - 1 + options.length) % options.length;
+    } else if (isHomeKey) {
+      nextIndex = 0;
+    } else if (isEndKey) {
+      nextIndex = options.length - 1;
+    }
+
+    const nextAnswer = options[nextIndex];
+    handleAnswerClick(questionIndex, nextAnswer);
+
+    const optionButtons = currentTarget.parentElement?.querySelectorAll(
+      '[role="radio"]',
+    );
+    optionButtons?.[nextIndex]?.focus();
+  };
+
   if (shuffledQuestions.length === 0)
-    return <p className="loading-text">Loading questions...</p>;
+    return (
+      <p className="loading-text" role="status" aria-live="polite" aria-atomic="true">
+        Loading questions...
+      </p>
+    );
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === shuffledQuestions.length - 1;
   const hasCurrentAnswer = Boolean(selectedAnswers[currentQuestionIndex]);
+  const currentSelectedAnswer = selectedAnswers[currentQuestionIndex];
+  const questionId = `question-${currentQuestionIndex}`;
 
   const calculateScore = () => {
     let correctCount = 0;
@@ -88,18 +141,41 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
         {!showResults && (
           <>
             <section className="questions-answers-section">
-              <label>{currentQuestion.question}</label>
-              <div className="answer-button-container">
+              <h2
+                id={questionId}
+                className="question-text"
+                ref={questionHeadingRef}
+                tabIndex={-1}
+              >
+                {currentQuestion.question}
+              </h2>
+              <div
+                className="answer-button-container"
+                role="radiogroup"
+                aria-labelledby={questionId}
+              >
                 {currentQuestion.options.map((answer, answerIndex) => {
-                  const isSelected =
-                    selectedAnswers[currentQuestionIndex] === answer;
+                  const isSelected = currentSelectedAnswer === answer;
+                  const isTabbable =
+                    isSelected || (!currentSelectedAnswer && answerIndex === 0);
 
                   return (
                     <button
                       key={answerIndex}
                       type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      tabIndex={isTabbable ? 0 : -1}
                       onClick={() =>
                         handleAnswerClick(currentQuestionIndex, answer)
+                      }
+                      onKeyDown={(event) =>
+                        handleAnswerKeyDown(
+                          event,
+                          currentQuestionIndex,
+                          answerIndex,
+                          currentQuestion.options,
+                        )
                       }
                       className={`answer-button ${
                         isSelected ? "selected-answer" : ""
@@ -130,7 +206,9 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
 
         {showResults && (
           <div className="intro-end">
-            <h1>QUIZZICAL</h1>
+            <h1 ref={resultsHeadingRef} tabIndex={-1}>
+              QUIZZICAL
+            </h1>
             <span>
               You scored {score}/{shuffledQuestions.length}!
             </span>

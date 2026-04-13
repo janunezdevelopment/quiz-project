@@ -16,8 +16,20 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --content-entrance: none;
+    --transition-fast: none;
+  }
+
+  .quiz-page,
   .error-page {
     animation: none;
+  }
+
+  .intro-end button:hover,
+  .form-submission-button:hover,
+  .form-submission-button:active {
+    transform: none;
   }
 }
 
@@ -43,7 +55,8 @@
   --color-primary-hover: #00d9ff;
   --color-border-soft: rgba(234, 244, 255, 0.35);
   --color-answer-selected: rgba(47, 125, 255, 0.35);
-  --color-button-disabled: #3b4e70;
+  --color-button-disabled: #465c85;
+  --color-button-disabled-text: #eaf4ff;
   --color-surface-glass: rgba(8, 24, 46, 0.82);
   --color-page-frame: #050e1e;
   --color-overlay-start: rgba(7, 17, 38, 0.7);
@@ -56,6 +69,8 @@
   --transition-fast: all 0.2s ease;
   --shadow-primary-hover: 0 8px 20px rgba(0, 217, 255, 0.35);
   --shadow-primary-active: 0 4px 10px rgba(0, 217, 255, 0.25);
+  --focus-ring-color: #9fd3ff;
+  --focus-ring-shadow: 0 0 0 3px rgba(159, 211, 255, 0.45);
 
   --content-entrance: content-entrance 0.5s ease forwards;
 }
@@ -106,7 +121,7 @@ body {
 }
 
 .intro-end h1,
-.questions-answers-section label,
+.questions-answers-section .question-text,
 .score-text {
   font-family: var(--font-family-heading);
   color: var(--color-text-primary);
@@ -195,6 +210,12 @@ select.difficulty-select {
   box-shadow: var(--shadow-primary-hover);
 }
 
+.difficulty-select .difficulty-select__control--is-focused,
+.difficulty-select .difficulty-select__control:focus-within {
+  border-color: var(--focus-ring-color);
+  box-shadow: var(--focus-ring-shadow);
+}
+
 .difficulty-select .difficulty-select__value-container {
   padding: 0 0.5rem;
 }
@@ -252,6 +273,15 @@ select.difficulty-select {
   box-shadow: var(--shadow-primary-hover);
 }
 
+.start-game-btn:focus-visible,
+.play-again-btn:focus-visible,
+.form-submission-button:focus-visible,
+.answer-button:focus-visible {
+  outline: 2px solid var(--focus-ring-color);
+  outline-offset: 3px;
+  box-shadow: var(--focus-ring-shadow);
+}
+
 /* Header Component */
 
 .header {
@@ -292,24 +322,26 @@ select.difficulty-select {
   border-bottom: 1px solid var(--color-border-soft);
 }
 
-.questions-answers-section label {
+.questions-answers-section .question-text {
   font-size: var(--font-size-large);
   font-weight: 600;
 }
 
 .answer-button-container {
   margin: 1em auto;
-  align-items: stretch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 0.7rem;
 }
 
 .answer-button {
-  min-width: 90vw;
-  height: auto;
-  min-height: 2.2rem;
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-answer);
+  width: 80vw;
+  height: auto;
+  min-height: 4rem;
   background-color: var(--color-surface-glass);
   font-size: var(--font-size-small);
   font-weight: 500;
@@ -343,8 +375,8 @@ select.difficulty-select {
 }
 
 .form-submission-button {
-  width: 10rem;
-  height: 2.5rem;
+  width: 12rem;
+  height: 4rem;
   border-radius: var(--radius-submit);
   white-space: nowrap;
 }
@@ -360,6 +392,8 @@ select.difficulty-select {
 
 .form-submission-button:disabled {
   background-color: var(--color-button-disabled);
+  color: var(--color-button-disabled-text);
+  border: 1px solid var(--color-border-soft);
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
