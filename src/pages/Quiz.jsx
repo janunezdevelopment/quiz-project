@@ -87,15 +87,19 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     const nextAnswer = options[nextIndex];
     handleAnswerClick(questionIndex, nextAnswer);
 
-    const optionButtons = currentTarget.parentElement?.querySelectorAll(
-      '[role="radio"]',
-    );
+    const optionButtons =
+      currentTarget.parentElement?.querySelectorAll('[role="radio"]');
     optionButtons?.[nextIndex]?.focus();
   };
 
   if (shuffledQuestions.length === 0)
     return (
-      <p className="loading-text" role="status" aria-live="polite" aria-atomic="true">
+      <p
+        className="loading-text"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         Loading questions...
       </p>
     );
@@ -207,7 +211,7 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
         {showResults && (
           <div className="intro-end">
             <h1 ref={resultsHeadingRef} tabIndex={-1}>
-              QUIZZICAL
+              QUIZTOPIA 3000
             </h1>
             <span>
               You scored {score}/{shuffledQuestions.length}!
