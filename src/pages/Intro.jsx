@@ -9,7 +9,7 @@ const difficultyOptions = [
 function Intro({ startGame, difficulty, onDifficultyChange }) {
   return (
     <div className="intro-end">
-      <h1>QUIZZICAL</h1>
+      <h1>QUIZTOPIA 3000</h1>
       <span>A quiz about computer tech</span>
       <label htmlFor="difficulty">Select Difficulty:</label>
       <DifficultyOptions
