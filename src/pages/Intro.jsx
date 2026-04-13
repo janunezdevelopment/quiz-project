@@ -1,21 +1,28 @@
+import DifficultyOptions from "../../components/Difficulty-Options";
+
+const difficultyOptions = [
+  { value: "easy", label: "Easy" },
+  { value: "medium", label: "Medium" },
+  { value: "hard", label: "Hard" },
+];
+
 function Intro({ startGame, difficulty, onDifficultyChange }) {
   return (
-    <div className="intro">
+    <div className="intro-end">
       <h1>QUIZZICAL</h1>
       <span>A quiz about computer tech</span>
       <label htmlFor="difficulty">Select Difficulty:</label>
-      <select
-        name="difficulty"
-        id="difficulty"
-        className="difficulty-select"
+      <DifficultyOptions
+        options={difficultyOptions}
         value={difficulty}
-        onChange={(event) => onDifficultyChange(event.target.value)}
-      >
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-      </select>
-      <button onClick={startGame} className="start-game-btn">Start Quiz</button>
+        onChange={(selectedOption) => onDifficultyChange(selectedOption.value)}
+        inputId="difficulty"
+        name="difficulty"
+        className="difficulty-select"
+      />
+      <button onClick={startGame} className="start-game-btn">
+        Start Quiz
+      </button>
     </div>
   );
 }

@@ -19,7 +19,7 @@
   --color-border-soft: rgba(234, 244, 255, 0.35);
   --color-answer-selected: rgba(47, 125, 255, 0.35);
   --color-button-disabled: #3b4e70;
-  --color-surface-glass: rgba(8, 24, 46, 0.72);
+  --color-surface-glass: rgba(8, 24, 46, 0.82);
   --color-page-frame: #050e1e;
   --color-overlay-start: rgba(7, 17, 38, 0.7);
   --color-overlay-end: rgba(15, 42, 74, 0.72);
@@ -77,7 +77,7 @@ body {
   width: 100%;
 }
 
-.intro,
+.intro-end,
 .quiz-page,
 .quiz-form,
 .answer-button-container,
@@ -86,14 +86,14 @@ body {
   flex-direction: column;
 }
 
-.intro h1,
+.intro-end h1,
 .questions-answers-section label,
 .score-text {
   font-family: var(--font-family-heading);
   color: var(--color-text-primary);
 }
 
-.intro button,
+.intro-end button,
 .form-submission-button,
 .next-btn {
   border: none;
@@ -108,24 +108,24 @@ body {
 
 /* Intro Page */
 
-.intro {
+.intro-end {
   align-items: center;
   text-align: center;
 }
 
-.intro h1 {
+.intro-end h1 {
   margin-bottom: 0.3rem;
   font-size: 3rem;
   font-weight: 800;
 }
 
-.intro span {
+.intro-end span {
   margin-bottom: 2rem;
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
-.intro label {
+.intro-end label {
   font-size: var(--font-size-small);
   color: var(--color-text-primary);
   margin-bottom: 1rem;
@@ -147,7 +147,7 @@ body {
   font-weight: 700;
 }
 
-.difficulty-select {
+select.difficulty-select {
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-intro-button);
   width: 10rem;
@@ -159,7 +159,60 @@ body {
   appearance: none;
 }
 
-.intro .difficulty-select {
+.difficulty-select {
+  width: 10rem;
+}
+
+.difficulty-select .difficulty-select__control {
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-intro-button);
+  min-height: 3.5rem;
+  background-color: var(--color-surface-glass);
+  box-shadow: none;
+}
+
+.difficulty-select .difficulty-select__control:hover {
+  border-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-primary-hover);
+}
+
+.difficulty-select .difficulty-select__value-container {
+  padding: 0 0.5rem;
+}
+
+.difficulty-select .difficulty-select__single-value,
+.difficulty-select .difficulty-select__placeholder,
+.difficulty-select .difficulty-select__input-container,
+.difficulty-select .difficulty-select__indicator {
+  color: var(--color-text-primary);
+}
+
+.difficulty-select .difficulty-select__indicator-separator {
+  display: none;
+}
+
+.difficulty-select .difficulty-select__menu {
+  background-color: var(--color-surface-glass);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-intro-button);
+  overflow: hidden;
+}
+
+.difficulty-select .difficulty-select__option {
+  color: var(--color-text-primary);
+  background-color: transparent;
+}
+
+.difficulty-select .difficulty-select__option--is-focused {
+  background-color: rgba(47, 125, 255, 0.22);
+}
+
+.difficulty-select .difficulty-select__option--is-selected {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+}
+
+.intro-end .difficulty-select {
   margin-bottom: 1.5rem;
 }
 
@@ -168,13 +221,13 @@ body {
   box-shadow: var(--shadow-primary-hover);
 }
 
-.intro button {
+.intro-end button {
   border-radius: var(--radius-intro-button);
   width: 12.5rem;
   height: 3.5rem;
 }
 
-.intro button:hover,
+.intro-end button:hover,
 .form-submission-button:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-primary-hover);
@@ -200,7 +253,7 @@ body {
 }
 
 .loading-text {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-exlarge);
   font-weight: 600;
   color: var(--color-text-primary);
 }

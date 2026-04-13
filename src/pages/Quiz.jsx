@@ -1,6 +1,14 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import { shuffle } from "../utils.jsx";
 import Header from "../../components/Header.jsx";
+import DifficultyOptions from "../../components/Difficulty-Options";
+
+const difficultyOptions = [
+  { value: "easy", label: "Easy" },
+  { value: "medium", label: "Medium" },
+  { value: "hard", label: "Hard" },
+];
 
 function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
@@ -38,7 +46,8 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     }
   };
 
-  if (shuffledQuestions.length === 0) return <p className="loading-text">Loading questions...</p>;
+  if (shuffledQuestions.length === 0)
+    return <p className="loading-text">Loading questions...</p>;
 
   const currentQuestion = shuffledQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === shuffledQuestions.length - 1;
@@ -120,23 +129,22 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
         )}
 
         {showResults && (
-          <div className="intro">
+          <div className="intro-end">
             <h1>QUIZZICAL</h1>
             <span>
               You scored {score}/{shuffledQuestions.length}!
             </span>
             <label htmlFor="results-difficulty">Select Difficulty:</label>
-            <select
-              id="results-difficulty"
+            <DifficultyOptions
+              options={difficultyOptions}
+              value={difficulty}
+              onChange={(selectedOption) =>
+                onDifficultyChange(selectedOption.value)
+              }
+              inputId="results-difficulty"
               name="results-difficulty"
               className="difficulty-select"
-              value={difficulty}
-              onChange={(e) => onDifficultyChange(e.target.value)}
-            >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
+            />
             <button
               type="button"
               onClick={handlePlayAgainClick}
