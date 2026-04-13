@@ -2,7 +2,7 @@ import he from "he";
 
 export async function fetchQuestions(difficulty = "easy") {
   const response = await fetch(
-    `https://opentdb.com/api.php?amount=3&category=18&difficulty=${difficulty}&type=multiple`,
+    `https://opentdb.com/api.php?amount=10&category=18&difficulty=${difficulty}&type=multiple`,
   );
 
   if (!response.ok) {
