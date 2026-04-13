@@ -4,6 +4,31 @@
   box-sizing: border-box;
 }
 
+@keyframes content-entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error-page {
+    animation: none;
+  }
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./fonts/space-grotesk/SpaceGrotesk-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+}
+
 :root {
   --font-family-base: "Space Grotesk", sans-serif;
   --font-family-heading: "Space Grotesk", sans-serif;
@@ -31,14 +56,8 @@
   --transition-fast: all 0.2s ease;
   --shadow-primary-hover: 0 8px 20px rgba(0, 217, 255, 0.35);
   --shadow-primary-active: 0 4px 10px rgba(0, 217, 255, 0.25);
-}
 
-@font-face {
-  font-family: "Space Grotesk";
-  src: url("./fonts/space-grotesk/SpaceGrotesk-VariableFont_wght.ttf")
-    format("truetype");
-  font-weight: 300 700;
-  font-style: normal;
+  --content-entrance: content-entrance 0.5s ease forwards;
 }
 
 /* Main App */
@@ -250,6 +269,7 @@ select.difficulty-select {
 
 .quiz-page {
   position: relative;
+  animation: var(--content-entrance);
 }
 
 .loading-text {
@@ -359,4 +379,29 @@ select.difficulty-select {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+/* Error Page */
+
+.error-page {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+  animation: var(--content-entrance);
+}
+
+.error-title {
+  font-size: var(--font-size-exlarge);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.error-message {
+  font-size: var(--font-size-large);
+  font-weight: 500;
+  color: var(--color-text-primary);
 }

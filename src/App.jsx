@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Intro from "./pages/Intro.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import Error from "./pages/Error.jsx";
 import { loadQuestions, startGame, handlePlayAgain } from "./utils.jsx";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
   const [gameData, setGameData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState("easy");
+  const [hasFetchError, setHasFetchError] = useState(false);
 
   const loadQuestionsHandler = () =>
     loadQuestions({
@@ -16,6 +18,7 @@ function App() {
       setLoading,
       setGameData,
       setGameState,
+      setHasFetchError,
     });
 
   const startGameHandler = () =>
@@ -26,14 +29,15 @@ function App() {
 
   return (
     <div className="app-container">
-      {!gameState && (
+      {hasFetchError && <Error />}
+      {!hasFetchError && !gameState && (
         <Intro
           startGame={startGameHandler}
           difficulty={difficulty}
           onDifficultyChange={setDifficulty}
         />
       )}
-      {gameState && (
+      {!hasFetchError && gameState && (
         <Quiz
           gameData={gameData}
           onPlayAgain={handlePlayAgainHandler}
