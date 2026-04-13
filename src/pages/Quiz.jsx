@@ -1,11 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { shuffle } from "../utils.jsx";
+import Header from "../../components/Header.jsx";
+import DifficultyOptions from "../../components/Difficulty-Options";
 
-function Quiz({ gameData, onPlayAgain }) {
+const difficultyOptions = [
+  { value: "easy", label: "Easy" },
+  { value: "medium", label: "Medium" },
+  { value: "hard", label: "Hard" },
+];
+
+function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [score, setScore] = useState(0);
+  const questionHeadingRef = useRef(null);
+  const resultsHeadingRef = useRef(null);
 
   useEffect(() => {
     // Guard clause: ensure gameData exists and is an array
@@ -18,6 +29,7 @@ function Quiz({ gameData, onPlayAgain }) {
       }));
 
       setSelectedAnswers({});
+      setCurrentQuestionIndex(0);
       setShowResults(false);
       setScore(0);
       setShuffledQuestions(randomized);
@@ -25,6 +37,19 @@ function Quiz({ gameData, onPlayAgain }) {
       setShuffledQuestions([]);
     }
   }, [gameData]); // Re-runs if the parent sends totally new data
+
+  useEffect(() => {
+    if (shuffledQuestions.length === 0) {
+      return;
+    }
+
+    if (showResults) {
+      resultsHeadingRef.current?.focus();
+      return;
+    }
+
+    questionHeadingRef.current?.focus();
+  }, [showResults, currentQuestionIndex, shuffledQuestions.length]);
 
   const handleAnswerClick = (questionIndex, answer) => {
     if (!showResults) {
@@ -35,85 +60,180 @@ function Quiz({ gameData, onPlayAgain }) {
     }
   };
 
-  if (shuffledQuestions.length === 0) return <p>Loading questions...</p>;
+  const handleAnswerKeyDown = (event, questionIndex, answerIndex, options) => {
+    const { key, currentTarget } = event;
+    const isNextKey = key === "ArrowRight" || key === "ArrowDown";
+    const isPrevKey = key === "ArrowLeft" || key === "ArrowUp";
+    const isHomeKey = key === "Home";
+    const isEndKey = key === "End";
 
-  const questionElements = shuffledQuestions.map((item, index) => {
-    return (
-      <section className="questions-answers-section" key={index}>
-        <label className="text-color-dark-blue karla-font">
-          {item.question}
-        </label>
-        <div className="answer-button-container">
-          {item.options.map((answer, answerIndex) => {
-            const isSelected = selectedAnswers[index] === answer;
-            const isCorrect = answer === item.correct_answer;
-            const showCorrect = showResults && isCorrect;
-            const showIncorrect = showResults && isSelected && !isCorrect;
+    if (!isNextKey && !isPrevKey && !isHomeKey && !isEndKey) {
+      return;
+    }
 
-            return (
-              <button
-                key={answerIndex}
-                type="button"
-                onClick={() => handleAnswerClick(index, answer)}
-                className={`answer-button text-color-dark-blue small-font 
-                  ${isSelected && !showResults ? "selected-answer" : ""}
-                  ${showCorrect ? "correct-answer" : ""}
-                  ${showIncorrect ? "incorrect-answer" : ""}`}
-              >
-                {answer}
-              </button>
-            );
-          })}
-        </div>
-      </section>
-    );
-  });
-
-  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Check if all questions have been answered
-    const allAnswered =
-      Object.keys(selectedAnswers).length === shuffledQuestions.length;
-
-    if (!showResults && allAnswered) {
-      // Calculate score
-      let correctCount = 0;
-      shuffledQuestions.forEach((question, index) => {
-        if (selectedAnswers[index] === question.correct_answer) {
-          correctCount++;
-        }
-      });
-
-      setScore(correctCount);
-      setShowResults(true);
-    } else if (showResults) {
-      await onPlayAgain();
+    let nextIndex = answerIndex;
+    if (isNextKey) {
+      nextIndex = (answerIndex + 1) % options.length;
+    } else if (isPrevKey) {
+      nextIndex = (answerIndex - 1 + options.length) % options.length;
+    } else if (isHomeKey) {
+      nextIndex = 0;
+    } else if (isEndKey) {
+      nextIndex = options.length - 1;
     }
+
+    const nextAnswer = options[nextIndex];
+    handleAnswerClick(questionIndex, nextAnswer);
+
+    const optionButtons = currentTarget.parentElement?.querySelectorAll(
+      '[role="radio"]',
+    );
+    optionButtons?.[nextIndex]?.focus();
   };
 
-  const allAnswered =
-    Object.keys(selectedAnswers).length === shuffledQuestions.length;
-  const isButtonDisabled = !showResults && !allAnswered;
+  if (shuffledQuestions.length === 0)
+    return (
+      <p className="loading-text" role="status" aria-live="polite" aria-atomic="true">
+        Loading questions...
+      </p>
+    );
+
+  const currentQuestion = shuffledQuestions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === shuffledQuestions.length - 1;
+  const hasCurrentAnswer = Boolean(selectedAnswers[currentQuestionIndex]);
+  const currentSelectedAnswer = selectedAnswers[currentQuestionIndex];
+  const questionId = `question-${currentQuestionIndex}`;
+
+  const calculateScore = () => {
+    let correctCount = 0;
+    shuffledQuestions.forEach((question, index) => {
+      if (selectedAnswers[index] === question.correct_answer) {
+        correctCount++;
+      }
+    });
+    return correctCount;
+  };
+
+  const handleNext = () => {
+    if (!hasCurrentAnswer || showResults) {
+      return;
+    }
+
+    if (isLastQuestion) {
+      setScore(calculateScore());
+      setShowResults(true);
+      return;
+    }
+
+    setCurrentQuestionIndex((prev) => prev + 1);
+  };
+
+  const handlePlayAgainClick = async () => {
+    await onPlayAgain();
+  };
 
   return (
-    <form className="quiz-form" onSubmit={handleSubmit}>
-      {questionElements}
-      <div className="results-container">
-        {showResults && (
-          <p className="score-text text-color-dark-blue karla-font">
-            You scored {score}/{shuffledQuestions.length} correct answers
-          </p>
+    <div className="quiz-page">
+      {!showResults && <Header />}
+      <section className="quiz-form">
+        {!showResults && (
+          <>
+            <section className="questions-answers-section">
+              <h2
+                id={questionId}
+                className="question-text"
+                ref={questionHeadingRef}
+                tabIndex={-1}
+              >
+                {currentQuestion.question}
+              </h2>
+              <div
+                className="answer-button-container"
+                role="radiogroup"
+                aria-labelledby={questionId}
+              >
+                {currentQuestion.options.map((answer, answerIndex) => {
+                  const isSelected = currentSelectedAnswer === answer;
+                  const isTabbable =
+                    isSelected || (!currentSelectedAnswer && answerIndex === 0);
+
+                  return (
+                    <button
+                      key={answerIndex}
+                      type="button"
+                      role="radio"
+                      aria-checked={isSelected}
+                      tabIndex={isTabbable ? 0 : -1}
+                      onClick={() =>
+                        handleAnswerClick(currentQuestionIndex, answer)
+                      }
+                      onKeyDown={(event) =>
+                        handleAnswerKeyDown(
+                          event,
+                          currentQuestionIndex,
+                          answerIndex,
+                          currentQuestion.options,
+                        )
+                      }
+                      className={`answer-button ${
+                        isSelected ? "selected-answer" : ""
+                      }`}
+                    >
+                      {answer}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <div className="results-container">
+              <p className="score-text">
+                Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
+              </p>
+              <button
+                type="button"
+                className="form-submission-button"
+                disabled={!hasCurrentAnswer}
+                onClick={handleNext}
+              >
+                {isLastQuestion ? "See results" : "Next"}
+              </button>
+            </div>
+          </>
         )}
-        <button
-          type="submit"
-          className="form-submission-button text-color-cream"
-          disabled={isButtonDisabled}
-        >
-          {showResults ? "Play again" : "Check answers"}
-        </button>
-      </div>
-    </form>
+
+        {showResults && (
+          <div className="intro-end">
+            <h1 ref={resultsHeadingRef} tabIndex={-1}>
+              QUIZZICAL
+            </h1>
+            <span>
+              You scored {score}/{shuffledQuestions.length}!
+            </span>
+            <label htmlFor="results-difficulty">Select Difficulty:</label>
+            <DifficultyOptions
+              options={difficultyOptions}
+              value={difficulty}
+              onChange={(selectedOption) =>
+                onDifficultyChange(selectedOption.value)
+              }
+              inputId="results-difficulty"
+              name="results-difficulty"
+              className="difficulty-select"
+            />
+            <button
+              type="button"
+              onClick={handlePlayAgainClick}
+              className="play-again-btn"
+            >
+              Play again
+            </button>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }
 

@@ -1,45 +1,50 @@
 import { useState } from "react";
 import Intro from "./pages/Intro.jsx";
 import Quiz from "./pages/Quiz.jsx";
-import { fetchQuestions } from "./utils.jsx";
+import Error from "./pages/Error.jsx";
+import { loadQuestions, startGame, handlePlayAgain } from "./utils.jsx";
 
 function App() {
   const [gameState, setGameState] = useState(false);
   const [gameData, setGameData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [difficulty, setDifficulty] = useState("easy");
+  const [hasFetchError, setHasFetchError] = useState(false);
 
-  const loadQuestions = async () => {
-    const hasExistingQuestions = Array.isArray(gameData) && gameData.length > 0;
-    setLoading(true);
-    try {
-      const cleanData = await fetchQuestions();
-      setGameData(cleanData);
-      console.log(cleanData);
-    } catch (error) {
-      console.error("Fetch failed", error);
-      if (!hasExistingQuestions) {
-        setGameState(false);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loadQuestionsHandler = () =>
+    loadQuestions({
+      gameData,
+      difficulty,
+      setLoading,
+      setGameData,
+      setGameState,
+      setHasFetchError,
+    });
 
-  const startGame = () => {
-    setGameState((prev) => !prev);
-    loadQuestions();
-  };
+  const startGameHandler = () =>
+    startGame({ setGameState, loadQuestionsHandler });
 
-  const handlePlayAgain = () => {
-    return loadQuestions();
-  };
+  const handlePlayAgainHandler = () =>
+    handlePlayAgain({ loadQuestionsHandler });
 
   return (
     <div className="app-container">
-      <img id="blob1" src="./src/assets/imgs/blob 1.png" />
-      <img id="blob2" src="./src/assets/imgs/blob 2.png" />
-      {!gameState && <Intro startGame={startGame} />}
-      {gameState && <Quiz gameData={gameData} onPlayAgain={handlePlayAgain} />}
+      {hasFetchError && <Error />}
+      {!hasFetchError && !gameState && (
+        <Intro
+          startGame={startGameHandler}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+        />
+      )}
+      {!hasFetchError && gameState && (
+        <Quiz
+          gameData={gameData}
+          onPlayAgain={handlePlayAgainHandler}
+          difficulty={difficulty}
+          onDifficultyChange={setDifficulty}
+        />
+      )}
     </div>
   );
 }
