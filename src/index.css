@@ -15,6 +15,18 @@
   }
 }
 
+@keyframes glow-pulse {
+  0%,
+  100% {
+    color: var(--color-text-primary);
+    text-shadow: none;
+  }
+  50% {
+    color: var(--color-primary-hover);
+    text-shadow: 0 0 12px rgba(0, 217, 255, 0.6);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --content-entrance: none;
@@ -23,6 +35,10 @@
 
   .quiz-page,
   .error-page {
+    animation: none;
+  }
+
+  .intro-end span {
     animation: none;
   }
 
@@ -156,8 +172,10 @@ body {
 
 .intro-end span {
   margin-bottom: 2rem;
+  font-size: var(--font-size-exlarge);
   font-weight: 600;
   color: var(--color-text-primary);
+  animation: glow-pulse 2.8s ease-in-out infinite;
 }
 
 .intro-end label {
