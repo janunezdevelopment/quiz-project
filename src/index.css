@@ -420,7 +420,8 @@ select.difficulty-select {
   box-shadow: var(--shadow-primary-active);
 }
 
-.form-submission-button:disabled {
+.form-submission-button:disabled,
+.back-reset-button:disabled {
   background-color: var(--color-button-disabled);
   color: var(--color-button-disabled-text);
   border: 1px solid var(--color-border-soft);
