@@ -129,6 +129,7 @@ body {
 
 .intro-end button,
 .form-submission-button,
+.back-reset-button,
 .next-btn {
   border: none;
   background-color: var(--color-primary);
@@ -168,6 +169,7 @@ body {
 .difficulty-select,
 .start-game-btn,
 .form-submission-button,
+.back-reset-button,
 .play-again-btn {
   font-family: inherit;
   font-size: var(--font-size-large);
@@ -177,6 +179,7 @@ body {
 
 .start-game-btn,
 .form-submission-button,
+.back-reset-button,
 .play-again-btn {
   font-weight: 700;
 }
@@ -268,7 +271,8 @@ select.difficulty-select {
 }
 
 .intro-end button:hover,
-.form-submission-button:hover {
+.form-submission-button:hover,
+.back-reset-button:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-primary-hover);
 }
@@ -276,6 +280,7 @@ select.difficulty-select {
 .start-game-btn:focus-visible,
 .play-again-btn:focus-visible,
 .form-submission-button:focus-visible,
+.back-reset-button:focus-visible,
 .answer-button:focus-visible {
   outline: 2px solid var(--focus-ring-color);
   outline-offset: 3px;
@@ -300,6 +305,30 @@ select.difficulty-select {
 .quiz-page {
   position: relative;
   animation: var(--content-entrance);
+}
+
+.back-reset-button {
+  width: 6rem;
+  height: 4rem;
+  border-radius: var(--radius-submit);
+  white-space: nowrap;
+}
+
+.back-reset-button:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.back-reset-button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-primary-active);
+}
+
+.quiz-button-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 }
 
 .loading-text {
