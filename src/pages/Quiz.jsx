@@ -9,13 +9,7 @@ const difficultyOptions = [
   { value: "hard", label: "Hard" },
 ];
 
-function Quiz({
-  gameData,
-  onPlayAgain,
-  onResetQuiz,
-  difficulty,
-  onDifficultyChange,
-}) {
+function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -144,8 +138,8 @@ function Quiz({
     await onPlayAgain();
   };
 
-  const handleResetQuizClick = () => {
-    onResetQuiz();
+  const handlePreviousQuestion = () => {
+    setCurrentQuestionIndex((prev) => prev - 1);
   };
 
   return (
@@ -210,8 +204,9 @@ function Quiz({
                 <button
                   type="button"
                   className="back-reset-button"
-                  onClick={handleResetQuizClick}
-                  aria-label="Back to intro and reset quiz"
+                  onClick={handlePreviousQuestion}
+                  disabled={currentQuestionIndex === 0}
+                  aria-label="Go to previous question"
                 >
                   &larr;
                 </button>
