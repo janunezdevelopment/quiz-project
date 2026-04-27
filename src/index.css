@@ -38,7 +38,7 @@
     animation: none;
   }
 
-  .intro-end span {
+  .quiz-page .intro-end span {
     animation: none;
   }
 
@@ -175,6 +175,9 @@ body {
   font-size: var(--font-size-exlarge);
   font-weight: 600;
   color: var(--color-text-primary);
+}
+
+.quiz-page .intro-end span {
   animation: glow-pulse 2.8s ease-in-out infinite;
 }
 
