@@ -9,7 +9,13 @@ const difficultyOptions = [
   { value: "hard", label: "Hard" },
 ];
 
-function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
+function Quiz({
+  gameData,
+  onPlayAgain,
+  onResetQuiz,
+  difficulty,
+  onDifficultyChange,
+}) {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -138,6 +144,10 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
     await onPlayAgain();
   };
 
+  const handleResetQuizClick = () => {
+    onResetQuiz();
+  };
+
   return (
     <div className="quiz-page">
       {!showResults && <Header />}
@@ -196,14 +206,24 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
               <p className="score-text">
                 Question {currentQuestionIndex + 1}/{shuffledQuestions.length}
               </p>
-              <button
-                type="button"
-                className="form-submission-button"
-                disabled={!hasCurrentAnswer}
-                onClick={handleNext}
-              >
-                {isLastQuestion ? "See results" : "Next"}
-              </button>
+              <div className="quiz-button-group">
+                <button
+                  type="button"
+                  className="back-reset-button"
+                  onClick={handleResetQuizClick}
+                  aria-label="Back to intro and reset quiz"
+                >
+                  &larr;
+                </button>
+                <button
+                  type="button"
+                  className="form-submission-button"
+                  disabled={!hasCurrentAnswer}
+                  onClick={handleNext}
+                >
+                  {isLastQuestion ? "See results" : "Next"}
+                </button>
+              </div>
             </div>
           </>
         )}

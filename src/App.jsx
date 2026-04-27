@@ -27,6 +27,13 @@ function App() {
   const handlePlayAgainHandler = () =>
     handlePlayAgain({ loadQuestionsHandler });
 
+  const handleResetQuizHandler = () => {
+    setGameState(false);
+    setGameData(null);
+    setHasFetchError(false);
+    setLoading(false);
+  };
+
   return (
     <div className="app-container">
       {hasFetchError && <Error />}
@@ -41,6 +48,7 @@ function App() {
         <Quiz
           gameData={gameData}
           onPlayAgain={handlePlayAgainHandler}
+          onResetQuiz={handleResetQuizHandler}
           difficulty={difficulty}
           onDifficultyChange={setDifficulty}
         />
