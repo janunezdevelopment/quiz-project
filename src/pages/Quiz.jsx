@@ -100,7 +100,7 @@ function Quiz({ gameData, onPlayAgain, difficulty, onDifficultyChange }) {
         aria-live="polite"
         aria-atomic="true"
       >
-        Loading questions...
+        Initializing quiz sequence...
       </p>
     );
 

@@ -118,8 +118,6 @@ body {
   overflow-x: hidden;
 }
 
-.app-container,
-.quiz-page,
 .quiz-form,
 .questions-answers-section,
 .answer-button-container,
@@ -154,7 +152,7 @@ body {
 
 .app-container {
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 2rem;
 }
 
 /* Intro Page */
@@ -390,7 +388,7 @@ select.difficulty-select {
   padding: 0.5rem 1rem;
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-answer);
-  width: 80vw;
+  width: 90%;
   height: auto;
   min-height: 4rem;
   background-color: var(--color-surface-glass);
