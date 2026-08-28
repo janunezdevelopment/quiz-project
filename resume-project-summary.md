@@ -1,0 +1,3 @@
+- Built a responsive quiz application in React that fetches and presents technology-themed questions, allowing users to select difficulty levels and complete an interactive game flow from start to results.
+- Designed reusable UI components and state-driven logic for question rendering, answer selection, score tracking, and replay functionality, improving maintainability and user engagement.
+- Applied front-end best practices including accessibility-focused interactions, keyboard navigation, and smooth user feedback to deliver a polished, intuitive experience for a broad audience.
